@@ -1,0 +1,18 @@
+name: GameU
+version: '${project.version}'
+main: dev.gameu.Gameu
+api-version: '1.20'
+
+commands:
+  trophy:
+    usage: /trophy
+    description: Allows a player to view all earned trophys
+  addTrophy:
+    usage: /addTrophy <player>
+    description: Adds the players held item to the recipient's trophy inventory.
+
+permissions:
+  GameU.admin:
+    description: "Admin permission set"
+    default: op
+
