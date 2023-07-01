@@ -10,6 +10,9 @@ commands:
   addTrophy:
     usage: /addTrophy <player>
     description: Adds the players held item to the recipient's trophy inventory.
+  event:
+    usage: /event [create <name> | delete]
+    description: "Teleports a player to an event"
 
 permissions:
   GameU.admin:
