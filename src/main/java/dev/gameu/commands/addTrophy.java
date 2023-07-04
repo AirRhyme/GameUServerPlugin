@@ -19,10 +19,10 @@ public class addTrophy implements CommandExecutor {
         }
         Player p = (Player)sender;
         if(p.hasPermission("GameU.admin")) {
-            if(args[0] != null){
+            if(args.length != 0){
                 Player target = Bukkit.getPlayer(args[0]);
                 ViewTrohpy.addTrophy(target, p.getInventory().getItemInMainHand(), p);
-                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Gave trophy " + p.getInventory().getItemInMainHand().getItemMeta().getDisplayName() + " to " + target.getName());
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Gave trophy " + p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().toString() + " to " + target.getName());
                 return true;
             }
             p.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Please specify a player");

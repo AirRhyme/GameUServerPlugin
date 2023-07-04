@@ -1,7 +1,11 @@
 name: GameU
 version: '${project.version}'
 main: dev.gameu.Gameu
-api-version: '1.20'
+description: A custom plugin build spasifically for game u
+authors:
+  - Dev(Creator)
+  - Admin Steven
+  - Admin Chris
 
 commands:
   trophy:
@@ -13,6 +17,12 @@ commands:
   event:
     usage: /event [create <name> | delete]
     description: "Teleports a player to an event"
+  broadcast:
+    usage: /event message
+    description: "Broadcast a message with the prefix §7[§4GAME U ANNOUNCEMENT§7]§r"
+  setTrophySlot:
+    description: "Set's a player's trophies inventory slot to null"
+    usage: /setTrophySlot <player username> <slot>
 
 permissions:
   GameU.admin:

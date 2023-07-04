@@ -1,8 +1,6 @@
 package dev.gameu;
 
-import dev.gameu.commands.ViewTrohpy;
-import dev.gameu.commands.addTrophy;
-import dev.gameu.commands.eventCommand;
+import dev.gameu.commands.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +22,8 @@ public final class Gameu extends JavaPlugin implements Listener {
       this.getCommand("trophy").setExecutor(new ViewTrohpy());
       this.getCommand("addTrophy").setExecutor(new addTrophy());
       this.getCommand("event").setExecutor(new eventCommand());
+        this.getCommand("broadcast").setExecutor(new BroadcastMessage());
+        this.getCommand("setTrophySlot").setExecutor(new settrophyslot());
       //Register event listeners
         this.getServer().getPluginManager().registerEvents(new ViewTrohpy(), this);
         this.getServer().getPluginManager().registerEvents(this, this);

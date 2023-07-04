@@ -1,90 +1,87 @@
 package dev.gameu.commands;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.*;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ViewTrohpy implements CommandExecutor, Listener {
-    public static Map<String, ItemStack[]> menus = new HashMap<String, ItemStack[]>();
-    public static Map<String, Integer> trophiesnumber = new HashMap<String, Integer>();
-    public static List<Inventory> invs = new ArrayList<Inventory>();
+    public static Map<String, ItemStack[]> menus = (Map)new HashMap<>();
+
     public Inventory inventory;
 
-    public void setupInventory(Player owner){
-
-        inventory = Bukkit.createInventory(owner, 45,  ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
-
+    public void setupInventory(Player owner) {
+        this.inventory = Bukkit.createInventory(owner, 54, ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             sender.sendMessage("You are not a player and cannot view anything");
             return true;
         }
         Player p = (Player)sender;
-        Inventory inv = Bukkit.createInventory(p, 45,  ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
-        invs.add(inv);
+        Inventory inv = Bukkit.createInventory(p, 54, ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
         if (menus.containsKey(p.getUniqueId().toString()))
             inv.setContents(menus.get(p.getUniqueId().toString()));
-
         p.openInventory(inv);
         return true;
     }
 
     @EventHandler
-    public void onInventoryInteract(InventoryInteractEvent event){
-       if(!invs.contains(event.getInventory())){
-           return;
-       }
+    public void onInventoryClick(InventoryClickEvent event) {
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory == null) {
+            return; // Ignore if the clicked inventory is null
+        }
 
-       event.setCancelled(true);
-       return;
+        InventoryHolder holder = clickedInventory.getHolder();
+        if (holder instanceof Player && event.getView().getTitle().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies")) {
+            ItemStack currentItem = event.getCurrentItem();
+            if (currentItem != null) {
+                event.setCancelled(true); // Cancel the event to prevent taking items
+                event.getWhoClicked().sendMessage("You cannot take items from this GUI.");
+            }
+        }
     }
 
     public static void addTrophy(Player p, ItemStack trophy, Player sendr) {
-        ItemStack[] content = new ItemStack[]{trophy}; // Create an array with the new trophy item
-
-        // Retrieve the existing value from the HashMap
+        trophy.setAmount(1);
+        ItemMeta meta = trophy.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        meta.setUnbreakable(true);
+        trophy.setItemMeta(meta);
+        ItemStack[] content = { trophy };
         ItemStack[] existingContent = menus.get(p.getUniqueId().toString());
-
-        // Check if there is existing content in the HashMap for the player
         if (existingContent != null) {
-            // Create a new array with a size that can accommodate both the existing content and the new trophy item
-            ItemStack[] newContent = Arrays.copyOf(existingContent, existingContent.length + 1);
-
-            // Append the new trophy item to the new array
+            ItemStack[] newContent = Arrays.<ItemStack>copyOf(existingContent, existingContent.length + 1);
             newContent[existingContent.length] = trophy;
-
-            // Update the value in the HashMap with the new array
             menus.put(p.getUniqueId().toString(), newContent);
         } else {
-            // If there is no existing content, simply add the new array to the HashMap
             menus.put(p.getUniqueId().toString(), content);
         }
-
-        trophiesnumber.put(p.getUniqueId().toString(), trophiesnumber.get(p.getUniqueId().toString()) + 1);
-        if(trophiesnumber.get(p.getUniqueId().toString()) == 38){
-            System.out.println("New page");
-
-        }
+        //p.getInventory().addItem(trophy);
+        p.sendMessage(ChatColor.GREEN + "You have been awared a trophy!");
     }
-
 
     @EventHandler
-    public void onGUIClosed(InventoryCloseEvent event){
-
-    }
-
+    public void onGUIClosed(InventoryCloseEvent event) {}
 }
