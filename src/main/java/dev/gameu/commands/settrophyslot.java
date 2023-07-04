@@ -30,7 +30,7 @@ public class settrophyslot implements CommandExecutor {
                 return true;
             }
         }else{
-            //
+            ///
             return true;
         }
     }
