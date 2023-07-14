@@ -1,11 +1,12 @@
 name: GameU
 version: '${project.version}'
 main: dev.gameu.Gameu
-description: A custom plugin build spasifically for game u
+description: A custom plugin build specifically for game u
 authors:
   - Dev(Creator)
   - Admin Steven
   - Admin Chris
+  - Other Game U People.
 
 commands:
   trophy:
@@ -23,9 +24,18 @@ commands:
   setTrophySlot:
     description: "Set's a player's trophies inventory slot to null"
     usage: /setTrophySlot <player username> <slot>
+  toggleChat:
+    description: "Toggles the chat mute"
+    usage: /toggleChat
 
 permissions:
   GameU.admin:
     description: "Admin permission set"
     default: op
+
+website: http://devclient.info
+prefix: {[Devs GameU Plugin]}
+load: STARTUP
+api-version: '1.20'
+
 

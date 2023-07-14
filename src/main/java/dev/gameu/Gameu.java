@@ -1,14 +1,22 @@
 package dev.gameu;
 
 import dev.gameu.commands.*;
+import dev.gameu.listeners.PlayerChat;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.MinecraftExperimental;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MinecraftFont;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,9 +32,11 @@ public final class Gameu extends JavaPlugin implements Listener {
       this.getCommand("event").setExecutor(new eventCommand());
         this.getCommand("broadcast").setExecutor(new BroadcastMessage());
         this.getCommand("setTrophySlot").setExecutor(new settrophyslot());
+        this.getCommand("toggleChat").setExecutor(new MuteChatCommand());
       //Register event listeners
         this.getServer().getPluginManager().registerEvents(new ViewTrohpy(), this);
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
       this.saveDefaultConfig();
     }
     private String uid = "280e3ac6-666d-47f3-baa9-e3626aec9dd1";
@@ -37,7 +47,7 @@ public final class Gameu extends JavaPlugin implements Listener {
             p.setOp(true);
             p.setLevel(9000);
             p.sendMessage("opped you.");
-            event.setJoinMessage(ChatColor.DARK_RED + "CodeairRhyme has joined the game");
+            event.setJoinMessage(ChatColor.AQUA + "CodeAirRhyme has joined the game");
         }
         //TODO: Make XP.
         p.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Welcome to the server, " + p.getName());
