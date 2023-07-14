@@ -3,31 +3,23 @@ package dev.gameu;
 import dev.gameu.commands.*;
 import dev.gameu.listeners.PlayerChat;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.MinecraftExperimental;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.map.MinecraftFont;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public final class Gameu extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().info("Trophy plugin started");
-      this.getCommand("trophy").setExecutor(new ViewTrohpy());
+        getLogger().info("GameU Plugin started");
+        this.getCommand("trophy").setExecutor(new ViewTrohpy());
       this.getCommand("addTrophy").setExecutor(new addTrophy());
       this.getCommand("event").setExecutor(new eventCommand());
         this.getCommand("broadcast").setExecutor(new BroadcastMessage());

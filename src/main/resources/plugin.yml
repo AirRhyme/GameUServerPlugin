@@ -34,7 +34,7 @@ permissions:
     default: op
 
 website: http://devclient.info
-prefix: {[Devs GameU Plugin]}
+prefix: Devs GameU Plugin
 load: STARTUP
 api-version: '1.20'
 
