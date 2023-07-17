@@ -1,8 +1,6 @@
 package dev.gameu.commands;
 
-import dev.gameu.utils.DiscordWebhook;
-import dev.gameu.utils.PosUtils;
-import dev.gameu.utils.UrlUtils;
+import dev.gameu.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,17 +18,23 @@ public class eventCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
-        if(!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             sender.sendMessage("You are not player.");
         }
 
-        Player p = (Player)sender;
+        if (!CommandUtils.isQualityOfLifeCommandsEnabled()) {
+            //HANDLE IT
+            MsgUtils.INSTANCE.sendNotEnabledError("event", sender);
+            return true;
+        }
+
+        Player p = (Player) sender;
 
         //Handle Create subcommand
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             Location to = PosUtils.getEventLocation();
-            if(to == null){
+            if (to == null) {
                 p.sendMessage(ChatColor.DARK_RED + "There is no event currently!");
                 return true;
             }

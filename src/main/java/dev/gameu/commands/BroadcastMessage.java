@@ -1,5 +1,7 @@
 package dev.gameu.commands;
 
+import dev.gameu.utils.CommandUtils;
+import dev.gameu.utils.MsgUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,8 +13,13 @@ public class BroadcastMessage implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        if(commandSender.hasPermission("GameU.admin")){
+        if(commandSender.hasPermission("GameU.admin")) {
             String message = String.join(" ", args);
+
+            if (!CommandUtils.isQualityOfLifeCommandsEnabled()) {
+                MsgUtils.INSTANCE.sendNotEnabledError("broadcast", commandSender);
+                return true;
+            }
 
             // Send the message to all players on the server
             Bukkit.broadcastMessage("§7[§4GAME U ANNOUNCEMENT§7] §r" + message);

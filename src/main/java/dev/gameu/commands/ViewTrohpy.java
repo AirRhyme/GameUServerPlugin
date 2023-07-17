@@ -1,12 +1,9 @@
 package dev.gameu.commands;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import dev.gameu.utils.MenuHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,52 +12,32 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ViewTrohpy implements CommandExecutor, Listener {
-    public static Map<String, ItemStack[]> menus = (Map)new HashMap<>();
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+
+public class ViewTrohpy implements CommandExecutor, Listener {
+    public static Map<String, ItemStack[]> menus = (Map) new HashMap<>();
+    private final String menuTitle = "Menu";
+    private final int maxPages = 5;
+    private final int slotsPerPage = 45;
+    private final ItemStack nextPageItem;
+    private final ItemStack previousPageItem;
     public Inventory inventory;
 
     public void setupInventory(Player owner) {
         this.inventory = Bukkit.createInventory(owner, 54, ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You are not a player and cannot view anything");
-            return true;
-        }
-        Player p = (Player)sender;
-        Inventory inv = Bukkit.createInventory(p, 54, ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
-        if (menus.containsKey(p.getUniqueId().toString()))
-            inv.setContents(menus.get(p.getUniqueId().toString()));
-        p.openInventory(inv);
-        return true;
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory == null) {
-            return; // Ignore if the clicked inventory is null
-        }
-
-        InventoryHolder holder = clickedInventory.getHolder();
-        if (holder instanceof Player && event.getView().getTitle().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies")) {
-            ItemStack currentItem = event.getCurrentItem();
-            if (currentItem != null) {
-                event.setCancelled(true); // Cancel the event to prevent taking items
-                event.getWhoClicked().sendMessage("You cannot take items from this GUI.");
-            }
-        }
+    public ViewTrohpy() {
+        nextPageItem = createNavigationItem("Next Page", Material.ARROW);
+        previousPageItem = createNavigationItem("Previous Page", Material.ARROW);
     }
 
     public static void addTrophy(Player p, ItemStack trophy, Player sendr) {
@@ -69,17 +46,46 @@ public class ViewTrohpy implements CommandExecutor, Listener {
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.setUnbreakable(true);
         trophy.setItemMeta(meta);
-        ItemStack[] content = { trophy };
-        ItemStack[] existingContent = menus.get(p.getUniqueId().toString());
+        ItemStack[] content = {trophy};
+        ItemStack[] existingContent = ViewTrohpy.menus.get(p.getUniqueId().toString());
         if (existingContent != null) {
             ItemStack[] newContent = Arrays.<ItemStack>copyOf(existingContent, existingContent.length + 1);
             newContent[existingContent.length] = trophy;
-            menus.put(p.getUniqueId().toString(), newContent);
+            ViewTrohpy.menus.put(p.getUniqueId().toString(), newContent);
         } else {
-            menus.put(p.getUniqueId().toString(), content);
+            ViewTrohpy.menus.put(p.getUniqueId().toString(), content);
         }
         //p.getInventory().addItem(trophy);
         p.sendMessage(ChatColor.GREEN + "You have been awared a trophy!");
+    }
+
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("You are not a player and cannot view anything");
+            return true;
+        }
+        Player p = (Player) sender;
+        Inventory inv = Bukkit.createInventory(p, 54, ChatColor.GOLD + "" + ChatColor.BOLD + "Trophies");
+        if (menus.containsKey(p.getUniqueId().toString()))
+            inv.setContents(menus.get(p.getUniqueId().toString()));
+
+        //p.openInventory(inv);
+        return true;
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getInventory().getHolder() instanceof MenuHolder) {
+            event.setCancelled(true);
+        }
+    }
+
+    private ItemStack createNavigationItem(String displayName, Material material) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        item.setItemMeta(meta);
+        return item;
     }
 
     @EventHandler

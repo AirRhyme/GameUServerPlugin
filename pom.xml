@@ -6,7 +6,7 @@
 
     <groupId>dev</groupId>
     <artifactId>gameu</artifactId>
-    <version>1.1-UNKNOWN-COMMAND_ERROR_FIX</version>
+    <version>1.0.2-THERESPAGESFINALLY</version>
     <packaging>jar</packaging>
 
     <name>gameu</name>
@@ -68,6 +68,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

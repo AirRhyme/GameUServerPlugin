@@ -2,7 +2,6 @@ package dev.gameu.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class MsgUtils {
     public static MsgUtils INSTANCE = new MsgUtils();
@@ -15,12 +14,16 @@ public class MsgUtils {
         chatmuted = newValue;
     }
 
-    public boolean toggleChatMuted(){
+    public boolean toggleChatMuted() {
         return chatmuted = !chatmuted;
     }
 
-    public boolean getChatMuted(){
+    public boolean getChatMuted() {
         return chatmuted;
+    }
+
+    public void sendNotEnabledError(String disabledCommand, CommandSender sendTo) {
+        sendTo.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "The command, " + disabledCommand + ", is currently disabled");
     }
 
 

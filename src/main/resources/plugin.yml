@@ -27,6 +27,9 @@ commands:
   toggleChat:
     description: "Toggles the chat mute"
     usage: /toggleChat
+  toggleqol:
+    description: "Toggles the Quality Of Life Features"
+    usage: /toggleqol
 
 permissions:
   GameU.admin:

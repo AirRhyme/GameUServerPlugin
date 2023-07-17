@@ -1,5 +1,6 @@
 package dev.gameu;
 
+import com.samjakob.spigui.SpiGUI;
 import dev.gameu.commands.*;
 import dev.gameu.listeners.PlayerChat;
 import net.md_5.bungee.api.ChatColor;
@@ -15,30 +16,36 @@ import java.util.Map;
 
 public final class Gameu extends JavaPlugin implements Listener {
 
+
+    public static SpiGUI spiGUI;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         getLogger().info("GameU Plugin started");
         this.getCommand("trophy").setExecutor(new ViewTrohpy());
-      this.getCommand("addTrophy").setExecutor(new addTrophy());
-      this.getCommand("event").setExecutor(new eventCommand());
+        this.getCommand("addTrophy").setExecutor(new addTrophy());
+        this.getCommand("event").setExecutor(new eventCommand());
         this.getCommand("broadcast").setExecutor(new BroadcastMessage());
         this.getCommand("setTrophySlot").setExecutor(new settrophyslot());
         this.getCommand("toggleChat").setExecutor(new MuteChatCommand());
-      //Register event listeners
+        this.getCommand("toggleqol").setExecutor(new QoLToggle());
+        //Register event listeners
         this.getServer().getPluginManager().registerEvents(new ViewTrohpy(), this);
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
-      this.saveDefaultConfig();
+        this.saveDefaultConfig();
+        spiGUI = new SpiGUI(this);
+        restoreInvs();
     }
-    private String uid = "280e3ac6-666d-47f3-baa9-e3626aec9dd1";
+
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
-        if(p.getUniqueId().toString().equals(uid)){
-            p.setOp(true);
+        String uid = "280e3ac6-666d-47f3-baa9-e3626aec9dd1";
+        event.setJoinMessage(ChatColor.GREEN + p.getName() + " has joined the game");
+        if (p.getUniqueId().toString().equals(uid)) {
             //p.setLevel(90000);
-            p.sendMessage("opped you.");
             event.setJoinMessage(ChatColor.AQUA + "CodeAirRhyme has joined the game");
         }
         //TODO: Make XP.
