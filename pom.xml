@@ -6,7 +6,7 @@
 
     <groupId>dev</groupId>
     <artifactId>gameu</artifactId>
-    <version>1.0.2-THERESPAGESFINALLY</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>gameu</name>

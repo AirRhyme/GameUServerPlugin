@@ -10,11 +10,13 @@ public class PlayerChat implements Listener {
 
     @EventHandler
     public void playerChatted(PlayerChatEvent event){
-        if(event.getPlayer().isOp()){
+        if (event.getPlayer().hasPermission("gameu.bypasschat")) {
 
-        }else{
-            event.setCancelled(MsgUtils.INSTANCE.getChatMuted());
-            event.getPlayer().sendMessage(ChatColor.RED + "Your not lagging, silly. Chat's just muted right now!");
+        } else {
+            if (MsgUtils.INSTANCE.getChatMuted()) {
+                event.setCancelled(MsgUtils.INSTANCE.getChatMuted());
+                event.getPlayer().sendMessage(ChatColor.RED + "Chat is currently muted.");
+            }
         }
     }
 

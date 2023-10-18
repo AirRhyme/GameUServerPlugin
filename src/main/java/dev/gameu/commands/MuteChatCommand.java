@@ -15,12 +15,12 @@ public class MuteChatCommand implements CommandExecutor {
             if (CommandUtils.isQualityOfLifeCommandsEnabled()) {
                 boolean newChatMutedValue = MsgUtils.INSTANCE.toggleChatMuted();
                 commandSender.sendMessage(ChatColor.GREEN + "Success! Chat muting is now set to " + newChatMutedValue);
+                return true;
             } else {
                 //TODO: Handle the disabling of the QoL Commands
                 MsgUtils.INSTANCE.sendNotEnabledError("mutechat", commandSender);
                 return true;
             }
-            return true;
         }else{
             MsgUtils.INSTANCE.sendPermissionError("gameu.admin", commandSender);
             return true;
